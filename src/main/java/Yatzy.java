@@ -1,116 +1,45 @@
-import java.util.Map;
-import java.util.stream.Stream;
-
 public class Yatzy {
 
 	private Yatzy() {
 		throw new IllegalStateException("Utility class");
 	}
 
-	public static int chance(int d1, int d2, int d3, int d4, int d5) {
-		return getSum(d1, d2, d3, d4, d5);
+	public static int chance(DiceRoll roll) {
+		return roll.sum();
 	}
 
-	public static int yatzy(int d1, int d2, int d3, int d4, int d5) {
-		Map<Integer, Long> counts = Stream.of(d1, d2, d3, d4, d5).collect(java.util.stream.Collectors
-				.groupingBy(java.util.function.Function.identity(), java.util.stream.Collectors.counting()));
-		return counts.values().stream().filter(count -> count == 5).findFirst().map(o -> 50).orElse(0);
+	public static int yatzy(DiceRoll roll) {
+		return roll.counts().values().stream().filter(count -> count == 5).findFirst().map(o -> 50).orElse(0);
 	}
 
-	public static int ones(int d1, int d2, int d3, int d4, int d5) {
-		int sum = 0;
-		if (d1 == 1)
-			sum++;
-		if (d2 == 1)
-			sum++;
-		if (d3 == 1)
-			sum++;
-		if (d4 == 1)
-			sum++;
-		if (d5 == 1)
-			sum++;
-
-		return sum;
+	public static int ones(DiceRoll roll) {
+		return number(roll, 1);
 	}
 
-	public static int twos(int d1, int d2, int d3, int d4, int d5) {
-		int sum = 0;
-		if (d1 == 2)
-			sum += 2;
-		if (d2 == 2)
-			sum += 2;
-		if (d3 == 2)
-			sum += 2;
-		if (d4 == 2)
-			sum += 2;
-		if (d5 == 2)
-			sum += 2;
-		return sum;
+	public static int twos(DiceRoll roll) {
+		return number(roll, 2);
+
 	}
 
-	public static int threes(int d1, int d2, int d3, int d4, int d5) {
-		int s;
-		s = 0;
-		if (d1 == 3)
-			s += 3;
-		if (d2 == 3)
-			s += 3;
-		if (d3 == 3)
-			s += 3;
-		if (d4 == 3)
-			s += 3;
-		if (d5 == 3)
-			s += 3;
-		return s;
+	public static int threes(DiceRoll roll) {
+		return number(roll, 3);
+
 	}
 
-	public static int fours(int d1, int d2, int d3, int d4, int d5) {
-		int[] dice = new int[5];
-		dice[0] = d1;
-		dice[1] = d2;
-		dice[2] = d3;
-		dice[3] = d4;
-		dice[4] = d5;
-
-		int sum;
-		sum = 0;
-		for (int at = 0; at != 5; at++) {
-			if (dice[at] == 4) {
-				sum += 4;
-			}
-		}
-		return sum;
+	public static int fours(DiceRoll roll) {
+		return number(roll, 4);
 	}
 
-	public static int fives(int d1, int d2, int d3, int d4, int d5) {
-		int[] dice = new int[5];
-		dice[0] = d1;
-		dice[1] = d2;
-		dice[2] = d3;
-		dice[3] = d4;
-		dice[4] = d5;
-
-		int s = 0;
-		int i;
-		for (i = 0; i < dice.length; i++)
-			if (dice[i] == 5)
-				s = s + 5;
-		return s;
+	public static int fives(DiceRoll roll) {
+		return number(roll, 5);
 	}
 
-	public static int sixes(int d1, int d2, int d3, int d4, int d5) {
-		int[] dice = new int[5];
-		dice[0] = d1;
-		dice[1] = d2;
-		dice[2] = d3;
-		dice[3] = d4;
-		dice[4] = d5;
+	public static int sixes(DiceRoll roll) {
+		return number(roll, 6);
+	}
 
-		int sum = 0;
-		for (int at = 0; at < dice.length; at++)
-			if (dice[at] == 6)
-				sum = sum + 6;
-		return sum;
+	private static int number(DiceRoll roll, int value) {
+		return roll.counts().getOrDefault(value, 0L).intValue() * value;
 	}
 
 	public static int onePair(int d1, int d2, int d3, int d4, int d5) {
@@ -232,9 +161,5 @@ public class Yatzy {
 			return _2_at * 2 + _3_at * 3;
 		else
 			return 0;
-	}
-
-	private static int getSum(int d1, int d2, int d3, int d4, int d5) {
-		return d1 + d2 + d3 + d4 + d5;
 	}
 }
