@@ -8,6 +8,8 @@ import java.util.Map;
 import java.util.Optional;
 
 public class DiceRoll {
+	private static final List<Integer> LARGE_STRAIGHT = Arrays.asList(2, 3, 4, 5, 6);
+	private static final List<Integer> SMALL_STRAIGHT = Arrays.asList(1, 2, 3, 4, 5);
 	private final List<Integer> dices;
 
 	public DiceRoll(int d1, int d2, int d3, int d4, int d5) {
@@ -45,6 +47,15 @@ public class DiceRoll {
 	public Optional<Integer> getQuadruple() {
 		return occurenceByDice().entrySet().stream().filter(o -> o.getValue() >= 4).map(Map.Entry::getKey)
 				.max(Comparator.naturalOrder());
+	}
+
+	public boolean isSmallStraight() {
+		return dices.stream().sorted().toList().equals(SMALL_STRAIGHT);
+
+	}
+
+	public boolean isLargeStraight() {
+		return dices.stream().sorted().toList().equals(LARGE_STRAIGHT);
 	}
 
 	private Map<Integer, Long> occurenceByDice() {
