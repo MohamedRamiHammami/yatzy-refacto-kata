@@ -1,3 +1,5 @@
+package com.kata.yatzy;
+
 import java.util.Optional;
 
 public class Yatzy {
