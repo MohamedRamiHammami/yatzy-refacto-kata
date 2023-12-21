@@ -12,11 +12,17 @@ public class DiceRoll {
 		this.dices = Arrays.asList(d1, d2, d3, d4, d5);
 	}
 
-	public Map<Integer, Long> counts() {
-		return dices.stream().collect(java.util.stream.Collectors.groupingBy(identity(), counting()));
-	}
-
 	public int sum() {
 		return dices.stream().mapToInt(Integer::intValue).sum();
 	}
+
+	public Map<Integer, Long> occurenceByDice() {
+		return dices.stream().collect(java.util.stream.Collectors.groupingBy(identity(), counting()));
+	}
+
+	public Map<Integer, Long> occurenceByDice(Integer excluded) {
+		return dices.stream().filter(o -> o != excluded.intValue())
+				.collect(java.util.stream.Collectors.groupingBy(identity(), counting()));
+	}
+
 }

@@ -60,29 +60,40 @@ class YatzyTest {
 
 	@Test
 	void onePair() {
-		assertEquals(6, Yatzy.onePair(3, 4, 3, 5, 6));
-		assertEquals(10, Yatzy.onePair(5, 3, 3, 3, 5));
-		assertEquals(12, Yatzy.onePair(5, 3, 6, 6, 5));
+		assertEquals(6, Yatzy.onePair(new DiceRoll(3, 4, 3, 5, 6)));
+		assertEquals(10, Yatzy.onePair(new DiceRoll(5, 3, 3, 3, 5)));
+		assertEquals(12, Yatzy.onePair(new DiceRoll(5, 3, 6, 6, 5)));
+
+		assertEquals(8, Yatzy.onePair(new DiceRoll(3, 3, 3, 4, 4)));
+		assertEquals(12, Yatzy.onePair(new DiceRoll(1, 1, 6, 2, 6)));
+		assertEquals(6, Yatzy.onePair(new DiceRoll(3, 3, 3, 4, 1)));
+		assertEquals(6, Yatzy.onePair(new DiceRoll(3, 3, 3, 3, 1)));
+
 	}
 
 	@Test
-	void twoPair() {
-		assertEquals(16, Yatzy.twoPair(3, 3, 5, 4, 5));
-		assertEquals(16, Yatzy.twoPair(3, 3, 5, 5, 5));
+	void twoPairs() {
+		assertEquals(16, Yatzy.twoPairs(new DiceRoll(3, 3, 5, 4, 5)));
+		assertEquals(16, Yatzy.twoPairs(new DiceRoll(3, 3, 5, 5, 5)));
+
+		assertEquals(8, Yatzy.twoPairs(new DiceRoll(1, 1, 2, 3, 3)));
+		assertEquals(0, Yatzy.twoPairs(new DiceRoll(1, 1, 2, 3, 4)));
+		assertEquals(6, Yatzy.twoPairs(new DiceRoll(1, 1, 2, 2, 2)));
+		assertEquals(0, Yatzy.twoPairs(new DiceRoll(1, 1, 1, 1, 2)));
 	}
 
 	@Test
 	void threeOfAKind() {
-		assertEquals(9, Yatzy.threeOfAKind(3, 3, 3, 4, 5));
-		assertEquals(15, Yatzy.threeOfAKind(5, 3, 5, 4, 5));
-		assertEquals(9, Yatzy.threeOfAKind(3, 3, 3, 3, 5));
-		assertEquals(9, Yatzy.threeOfAKind(3, 3, 3, 3, 3));
+		assertEquals(9, Yatzy.threeOfAKind(new DiceRoll(3, 3, 3, 4, 5)));
+		assertEquals(15, Yatzy.threeOfAKind(new DiceRoll(5, 3, 5, 4, 5)));
+		assertEquals(9, Yatzy.threeOfAKind(new DiceRoll(3, 3, 3, 3, 5)));
+		assertEquals(9, Yatzy.threeOfAKind(new DiceRoll(3, 3, 3, 3, 3)));
 	}
 
 	@Test
 	void fourOfAKind() {
-		assertEquals(12, Yatzy.fourOfAKind(3, 3, 3, 3, 5));
-		assertEquals(20, Yatzy.fourOfAKind(5, 5, 5, 4, 5));
+		assertEquals(12, Yatzy.fourOfAKind(new DiceRoll(3, 3, 3, 3, 5)));
+		assertEquals(20, Yatzy.fourOfAKind(new DiceRoll(5, 5, 5, 4, 5)));
 	}
 
 	@Test

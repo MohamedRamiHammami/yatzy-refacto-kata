@@ -1,3 +1,6 @@
+import java.util.Comparator;
+import java.util.Map;
+
 public class Yatzy {
 
 	private Yatzy() {
@@ -9,99 +12,79 @@ public class Yatzy {
 	}
 
 	public static int yatzy(DiceRoll roll) {
-		return roll.counts().values().stream().filter(count -> count == 5).findFirst().map(o -> 50).orElse(0);
+		return roll.occurenceByDice().values().stream().filter(count -> count == 5).findFirst().map(o -> 50).orElse(0);
 	}
 
 	public static int ones(DiceRoll roll) {
-		return number(roll, 1);
+		return numberCategoryScore(roll, 1);
 	}
 
 	public static int twos(DiceRoll roll) {
-		return number(roll, 2);
+		return numberCategoryScore(roll, 2);
 
 	}
 
 	public static int threes(DiceRoll roll) {
-		return number(roll, 3);
+		return numberCategoryScore(roll, 3);
 
 	}
 
 	public static int fours(DiceRoll roll) {
-		return number(roll, 4);
+		return numberCategoryScore(roll, 4);
 	}
 
 	public static int fives(DiceRoll roll) {
-		return number(roll, 5);
+		return numberCategoryScore(roll, 5);
 	}
 
 	public static int sixes(DiceRoll roll) {
-		return number(roll, 6);
+		return numberCategoryScore(roll, 6);
 	}
 
-	private static int number(DiceRoll roll, int value) {
-		return roll.counts().getOrDefault(value, 0L).intValue() * value;
+	private static int numberCategoryScore(DiceRoll roll, int value) {
+		return roll.occurenceByDice().getOrDefault(value, 0L).intValue() * value;
 	}
 
-	public static int onePair(int d1, int d2, int d3, int d4, int d5) {
-		int[] counts = new int[6];
-		counts[d1 - 1]++;
-		counts[d2 - 1]++;
-		counts[d3 - 1]++;
-		counts[d4 - 1]++;
-		counts[d5 - 1]++;
-		int at;
-		for (at = 0; at != 6; at++)
-			if (counts[6 - at - 1] >= 2)
-				return (6 - at) * 2;
-		return 0;
+	public static int onePair(DiceRoll roll) {
+		return getMaxPair(roll);
 	}
 
-	public static int twoPair(int d1, int d2, int d3, int d4, int d5) {
-		int[] counts = new int[6];
-		counts[d1 - 1]++;
-		counts[d2 - 1]++;
-		counts[d3 - 1]++;
-		counts[d4 - 1]++;
-		counts[d5 - 1]++;
-		int n = 0;
-		int score = 0;
-		for (int i = 0; i < 6; i += 1)
-			if (counts[6 - i - 1] >= 2) {
-				n++;
-				score += (6 - i);
-			}
-		if (n == 2)
-			return score * 2;
-		else
+	private static Integer getMaxPair(DiceRoll roll) {
+		return roll.occurenceByDice().entrySet().stream().filter(o -> o.getValue() >= 2).map(Map.Entry::getKey)
+				.max(Comparator.naturalOrder()).map(value -> 2 * value).orElse(0);
+	}
+
+	public static int twoPairs(DiceRoll roll) {
+		Integer firstPairScore = getMaxPair(roll);
+		if (firstPairScore == 0)
 			return 0;
+		Integer secondPairScore = getMaxPair(roll, firstPairScore / 2);
+		if (secondPairScore == 0)
+			return 0;
+		return firstPairScore + secondPairScore;
 	}
 
-	public static int fourOfAKind(int d1, int d2, int d3, int d4, int d5) {
-		int[] tallies;
-		tallies = new int[6];
-		tallies[d1 - 1]++;
-		tallies[d2 - 1]++;
-		tallies[d3 - 1]++;
-		tallies[d4 - 1]++;
-		tallies[d5 - 1]++;
-		for (int i = 0; i < 6; i++)
-			if (tallies[i] >= 4)
-				return (i + 1) * 4;
-		return 0;
+	private static Integer getMaxPair(DiceRoll roll, Integer excluded) {
+		return roll.occurenceByDice(excluded).entrySet().stream().filter(o -> o.getValue() >= 2).map(Map.Entry::getKey)
+				.max(Comparator.naturalOrder()).map(value -> 2 * value).orElse(0);
 	}
 
-	public static int threeOfAKind(int d1, int d2, int d3, int d4, int d5) {
-		int[] t;
-		t = new int[6];
-		t[d1 - 1]++;
-		t[d2 - 1]++;
-		t[d3 - 1]++;
-		t[d4 - 1]++;
-		t[d5 - 1]++;
-		for (int i = 0; i < 6; i++)
-			if (t[i] >= 3)
-				return (i + 1) * 3;
-		return 0;
+	public static int threeOfAKind(DiceRoll roll) {
+		return getTriple(roll);
+	}
+
+	private static Integer getTriple(DiceRoll roll) {
+		return roll.occurenceByDice().entrySet().stream().filter(o -> o.getValue() >= 3).map(Map.Entry::getKey)
+				.max(Comparator.naturalOrder()).map(value -> 3 * value).orElse(0);
+	}
+
+	public static int fourOfAKind(DiceRoll roll) {
+		return getQuadruple(roll);
+	}
+
+	private static Integer getQuadruple(DiceRoll roll) {
+		return roll.occurenceByDice().entrySet().stream().filter(o -> o.getValue() >= 4).map(Map.Entry::getKey)
+				.max(Comparator.naturalOrder()).map(value -> 4 * value).orElse(0);
 	}
 
 	public static int smallStraight(int d1, int d2, int d3, int d4, int d5) {
