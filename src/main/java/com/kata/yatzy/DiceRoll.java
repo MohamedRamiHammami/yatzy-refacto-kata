@@ -26,8 +26,8 @@ public class DiceRoll {
 		return occurenceByDice().values().stream().filter(count -> count == 5).findFirst();
 	}
 
-	public int numberCategoryScore(DiceRoll roll, int value) {
-		return roll.occurenceByDice().getOrDefault(value, 0L).intValue() * value;
+	public int numberCategoryScore(int value) {
+		return occurenceByDice().getOrDefault(value, 0L).intValue() * value;
 	}
 
 	public Optional<Integer> getMaxPair() {

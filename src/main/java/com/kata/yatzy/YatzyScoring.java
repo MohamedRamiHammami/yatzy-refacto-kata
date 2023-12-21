@@ -2,9 +2,9 @@ package com.kata.yatzy;
 
 import java.util.Optional;
 
-public class Yatzy {
+public class YatzyScoring {
 
-	private Yatzy() {
+	private YatzyScoring() {
 		throw new IllegalStateException("Utility class");
 	}
 
@@ -17,29 +17,29 @@ public class Yatzy {
 	}
 
 	public static int ones(DiceRoll roll) {
-		return roll.numberCategoryScore(roll, 1);
+		return roll.numberCategoryScore(1);
 	}
 
 	public static int twos(DiceRoll roll) {
-		return roll.numberCategoryScore(roll, 2);
+		return roll.numberCategoryScore(2);
 
 	}
 
 	public static int threes(DiceRoll roll) {
-		return roll.numberCategoryScore(roll, 3);
+		return roll.numberCategoryScore(3);
 
 	}
 
 	public static int fours(DiceRoll roll) {
-		return roll.numberCategoryScore(roll, 4);
+		return roll.numberCategoryScore(4);
 	}
 
 	public static int fives(DiceRoll roll) {
-		return roll.numberCategoryScore(roll, 5);
+		return roll.numberCategoryScore(5);
 	}
 
 	public static int sixes(DiceRoll roll) {
-		return roll.numberCategoryScore(roll, 6);
+		return roll.numberCategoryScore(6);
 	}
 
 	public static int onePair(DiceRoll roll) {
