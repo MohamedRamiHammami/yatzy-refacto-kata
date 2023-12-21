@@ -1,5 +1,4 @@
-import java.util.Comparator;
-import java.util.Map;
+import java.util.Optional;
 
 public class Yatzy {
 
@@ -12,79 +11,55 @@ public class Yatzy {
 	}
 
 	public static int yatzy(DiceRoll roll) {
-		return roll.occurenceByDice().values().stream().filter(count -> count == 5).findFirst().map(o -> 50).orElse(0);
+		return roll.matchYatzy().map(o -> 50).orElse(0);
 	}
 
 	public static int ones(DiceRoll roll) {
-		return numberCategoryScore(roll, 1);
+		return roll.numberCategoryScore(roll, 1);
 	}
 
 	public static int twos(DiceRoll roll) {
-		return numberCategoryScore(roll, 2);
+		return roll.numberCategoryScore(roll, 2);
 
 	}
 
 	public static int threes(DiceRoll roll) {
-		return numberCategoryScore(roll, 3);
+		return roll.numberCategoryScore(roll, 3);
 
 	}
 
 	public static int fours(DiceRoll roll) {
-		return numberCategoryScore(roll, 4);
+		return roll.numberCategoryScore(roll, 4);
 	}
 
 	public static int fives(DiceRoll roll) {
-		return numberCategoryScore(roll, 5);
+		return roll.numberCategoryScore(roll, 5);
 	}
 
 	public static int sixes(DiceRoll roll) {
-		return numberCategoryScore(roll, 6);
-	}
-
-	private static int numberCategoryScore(DiceRoll roll, int value) {
-		return roll.occurenceByDice().getOrDefault(value, 0L).intValue() * value;
+		return roll.numberCategoryScore(roll, 6);
 	}
 
 	public static int onePair(DiceRoll roll) {
-		return getMaxPair(roll);
-	}
-
-	private static Integer getMaxPair(DiceRoll roll) {
-		return roll.occurenceByDice().entrySet().stream().filter(o -> o.getValue() >= 2).map(Map.Entry::getKey)
-				.max(Comparator.naturalOrder()).map(value -> 2 * value).orElse(0);
+		return roll.getMaxPair().map(value -> 2 * value).orElse(0);
 	}
 
 	public static int twoPairs(DiceRoll roll) {
-		Integer firstPairScore = getMaxPair(roll);
-		if (firstPairScore == 0)
+		Optional<Integer> firstPairScore = roll.getMaxPair();
+		if (firstPairScore.isEmpty())
 			return 0;
-		Integer secondPairScore = getMaxPair(roll, firstPairScore / 2);
-		if (secondPairScore == 0)
+		Optional<Integer> secondPairScore = roll.getRemainingPair(firstPairScore.get());
+		if (secondPairScore.isEmpty())
 			return 0;
-		return firstPairScore + secondPairScore;
-	}
-
-	private static Integer getMaxPair(DiceRoll roll, Integer excluded) {
-		return roll.occurenceByDice(excluded).entrySet().stream().filter(o -> o.getValue() >= 2).map(Map.Entry::getKey)
-				.max(Comparator.naturalOrder()).map(value -> 2 * value).orElse(0);
+		return 2 * firstPairScore.get() + 2 * secondPairScore.get();
 	}
 
 	public static int threeOfAKind(DiceRoll roll) {
-		return getTriple(roll);
-	}
-
-	private static Integer getTriple(DiceRoll roll) {
-		return roll.occurenceByDice().entrySet().stream().filter(o -> o.getValue() >= 3).map(Map.Entry::getKey)
-				.max(Comparator.naturalOrder()).map(value -> 3 * value).orElse(0);
+		return roll.getTriple().map(value -> 3 * value).orElse(0);
 	}
 
 	public static int fourOfAKind(DiceRoll roll) {
-		return getQuadruple(roll);
-	}
-
-	private static Integer getQuadruple(DiceRoll roll) {
-		return roll.occurenceByDice().entrySet().stream().filter(o -> o.getValue() >= 4).map(Map.Entry::getKey)
-				.max(Comparator.naturalOrder()).map(value -> 4 * value).orElse(0);
+		return roll.getQuadruple().map(value -> 4 * value).orElse(0);
 	}
 
 	public static int smallStraight(int d1, int d2, int d3, int d4, int d5) {
