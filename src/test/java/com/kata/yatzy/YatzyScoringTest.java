@@ -1,5 +1,6 @@
 package com.kata.yatzy;
 
+import static com.kata.yatzy.YatziCategory.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.stream.Stream;
@@ -13,7 +14,7 @@ class YatzyScoringTest {
 	@ParameterizedTest
 	@MethodSource("chanceCategory")
 	void chance(Integer expectedScore, DiceRoll roll) {
-		assertEquals(expectedScore, YatzyScoring.chance(roll));
+		assertEquals(expectedScore, CHANCE.score(roll));
 	}
 
 	private static Stream<Arguments> chanceCategory() {
@@ -23,7 +24,7 @@ class YatzyScoringTest {
 	@ParameterizedTest
 	@MethodSource("yatzyCategory")
 	void yatzy(Integer expectedScore, DiceRoll roll) {
-		assertEquals(expectedScore, YatzyScoring.yatzy(roll));
+		assertEquals(expectedScore, YATZY.score(roll));
 	}
 
 	private static Stream<Arguments> yatzyCategory() {
@@ -34,7 +35,7 @@ class YatzyScoringTest {
 	@ParameterizedTest
 	@MethodSource("onesCategory")
 	void ones(Integer expectedScore, DiceRoll roll) {
-		assertEquals(expectedScore, YatzyScoring.ones(roll));
+		assertEquals(expectedScore, ONES.score(roll));
 	}
 
 	private static Stream<Arguments> onesCategory() {
@@ -45,7 +46,7 @@ class YatzyScoringTest {
 	@ParameterizedTest
 	@MethodSource("twosCategory")
 	void twos(Integer expectedScore, DiceRoll roll) {
-		assertEquals(expectedScore, YatzyScoring.twos(roll));
+		assertEquals(expectedScore, TWOS.score(roll));
 	}
 
 	private static Stream<Arguments> twosCategory() {
@@ -55,7 +56,7 @@ class YatzyScoringTest {
 	@ParameterizedTest
 	@MethodSource("threesCategory")
 	void threes(Integer expectedScore, DiceRoll roll) {
-		assertEquals(expectedScore, YatzyScoring.threes(roll));
+		assertEquals(expectedScore, THREES.score(roll));
 	}
 
 	private static Stream<Arguments> threesCategory() {
@@ -65,7 +66,7 @@ class YatzyScoringTest {
 	@ParameterizedTest
 	@MethodSource("foursCategory")
 	void fours(Integer expectedScore, DiceRoll roll) {
-		assertEquals(expectedScore, YatzyScoring.fours(roll));
+		assertEquals(expectedScore, FOURS.score(roll));
 	}
 
 	private static Stream<Arguments> foursCategory() {
@@ -76,7 +77,7 @@ class YatzyScoringTest {
 	@ParameterizedTest
 	@MethodSource("fivesCategory")
 	void fives(Integer expectedScore, DiceRoll roll) {
-		assertEquals(expectedScore, YatzyScoring.fives(roll));
+		assertEquals(expectedScore, FIVES.score(roll));
 	}
 
 	private static Stream<Arguments> fivesCategory() {
@@ -87,7 +88,7 @@ class YatzyScoringTest {
 	@ParameterizedTest
 	@MethodSource("sixesCategory")
 	void sixes(Integer expectedScore, DiceRoll roll) {
-		assertEquals(expectedScore, YatzyScoring.sixes(roll));
+		assertEquals(expectedScore, SIXES.score(roll));
 	}
 
 	private static Stream<Arguments> sixesCategory() {
@@ -98,7 +99,7 @@ class YatzyScoringTest {
 	@ParameterizedTest
 	@MethodSource("onePairCategory")
 	void onePair(Integer expectedScore, DiceRoll roll) {
-		assertEquals(expectedScore, YatzyScoring.onePair(roll));
+		assertEquals(expectedScore, ONE_PAIR.score(roll));
 	}
 
 	private static Stream<Arguments> onePairCategory() {
@@ -110,7 +111,7 @@ class YatzyScoringTest {
 	@ParameterizedTest
 	@MethodSource("twoPairsCategory")
 	void twoPairs(Integer expectedScore, DiceRoll roll) {
-		assertEquals(expectedScore, YatzyScoring.twoPairs(roll));
+		assertEquals(expectedScore, TWO_PAIRS.score(roll));
 	}
 
 	private static Stream<Arguments> twoPairsCategory() {
@@ -122,18 +123,19 @@ class YatzyScoringTest {
 	@ParameterizedTest
 	@MethodSource("threeOfKindCategory")
 	void threeOfAKind(Integer expectedScore, DiceRoll roll) {
-		assertEquals(expectedScore, YatzyScoring.threeOfAKind(roll));
+		assertEquals(expectedScore, THREE_OF_KIND.score(roll));
 	}
 
 	private static Stream<Arguments> threeOfKindCategory() {
 		return Stream.of(Arguments.of(9, new DiceRoll(3, 3, 3, 4, 5)), Arguments.of(15, new DiceRoll(5, 3, 5, 4, 5)),
-				Arguments.of(9, new DiceRoll(3, 3, 3, 3, 5)), Arguments.of(9, new DiceRoll(3, 3, 3, 3, 3)));
+				Arguments.of(9, new DiceRoll(3, 3, 3, 3, 5)), Arguments.of(9, new DiceRoll(3, 3, 3, 3, 3)),
+				Arguments.of(0, new DiceRoll(3, 3, 4, 4, 5)));
 	}
 
 	@ParameterizedTest
 	@MethodSource("fourOfKindCategory")
 	void fourOfAKind(Integer expectedScore, DiceRoll roll) {
-		assertEquals(expectedScore, YatzyScoring.fourOfAKind(roll));
+		assertEquals(expectedScore, FOUR_OF_KIND.score(roll));
 	}
 
 	private static Stream<Arguments> fourOfKindCategory() {
@@ -143,7 +145,7 @@ class YatzyScoringTest {
 	@ParameterizedTest
 	@MethodSource("smallStraightCategory")
 	void smallStraight(Integer expectedScore, DiceRoll roll) {
-		assertEquals(expectedScore, YatzyScoring.smallStraight(roll));
+		assertEquals(expectedScore, SMALL_STRAIGHT.score(roll));
 	}
 
 	private static Stream<Arguments> smallStraightCategory() {
@@ -154,7 +156,7 @@ class YatzyScoringTest {
 	@ParameterizedTest
 	@MethodSource("largeStraightCategory")
 	void largeStraight(Integer expectedScore, DiceRoll roll) {
-		assertEquals(expectedScore, YatzyScoring.largeStraight(roll));
+		assertEquals(expectedScore, LARGE_STRAIGHT.score(roll));
 	}
 
 	private static Stream<Arguments> largeStraightCategory() {
@@ -165,7 +167,7 @@ class YatzyScoringTest {
 	@ParameterizedTest
 	@MethodSource("fullHouseCategory")
 	void fullHouse(Integer expectedScore, DiceRoll roll) {
-		assertEquals(expectedScore, YatzyScoring.fullHouse(roll));
+		assertEquals(expectedScore, FULL_HOUSE.score(roll));
 	}
 
 	private static Stream<Arguments> fullHouseCategory() {

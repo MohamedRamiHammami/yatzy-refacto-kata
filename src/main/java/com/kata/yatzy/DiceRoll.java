@@ -26,38 +26,30 @@ public class DiceRoll {
 		return occurenceByDice().values().stream().filter(count -> count == 5).findFirst();
 	}
 
-	public int numberCategoryScore(int value) {
-		return occurenceByDice().getOrDefault(value, 0L).intValue() * value;
+	public int getOccurence(int value) {
+		return occurenceByDice().getOrDefault(value, 0L).intValue();
 	}
 
-	public Optional<Integer> getMaxPair() {
-		return occurenceByDice().entrySet().stream().filter(o -> o.getValue() >= 2).map(Map.Entry::getKey)
-				.max(Comparator.naturalOrder());
+	public Optional<Integer> findMaxByOccurenceGTE(int numberOfOccurences) {
+		return occurenceByDice().entrySet().stream().filter(o -> o.getValue() >= numberOfOccurences)
+				.map(Map.Entry::getKey).max(Comparator.naturalOrder());
 	}
 
-	public Optional<Integer> getRemainingPair(Integer excluded) {
-		return occurenceByDice().entrySet().stream()
-				.filter(o -> o.getKey().intValue() != excluded.intValue() && o.getValue() >= 2).map(Map.Entry::getKey)
-				.max(Comparator.naturalOrder());
-	}
-
-	public Optional<Integer> getTriple() {
-		return occurenceByDice().entrySet().stream().filter(o -> o.getValue() >= 3).map(Map.Entry::getKey)
-				.max(Comparator.naturalOrder());
-	}
-
-	public Optional<Integer> getQuadruple() {
-		return occurenceByDice().entrySet().stream().filter(o -> o.getValue() >= 4).map(Map.Entry::getKey)
-				.max(Comparator.naturalOrder());
+	public Optional<Integer> getRemainingPair(int excluded) {
+		return occurenceByDice().entrySet().stream().filter(o -> o.getKey() != excluded && o.getValue() >= 2)
+				.map(Map.Entry::getKey).max(Comparator.naturalOrder());
 	}
 
 	public boolean isSmallStraight() {
-		return dices.stream().sorted().toList().equals(SMALL_STRAIGHT);
-
+		return getSortedDices().equals(SMALL_STRAIGHT);
 	}
 
 	public boolean isLargeStraight() {
-		return dices.stream().sorted().toList().equals(LARGE_STRAIGHT);
+		return getSortedDices().equals(LARGE_STRAIGHT);
+	}
+
+	private List<Integer> getSortedDices() {
+		return dices.stream().sorted().toList();
 	}
 
 	private Map<Integer, Long> occurenceByDice() {
