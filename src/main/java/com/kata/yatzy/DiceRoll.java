@@ -8,10 +8,10 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import static com.kata.yatzy.YatziContant.*;
 
 public class DiceRoll {
-	private static final List<Integer> LARGE_STRAIGHT = Arrays.asList(2, 3, 4, 5, 6);
-	private static final List<Integer> SMALL_STRAIGHT = Arrays.asList(1, 2, 3, 4, 5);
+
 	private final List<Integer> dices;
 
 	public DiceRoll(int d1, int d2, int d3, int d4, int d5) {
